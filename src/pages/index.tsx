@@ -25,7 +25,6 @@ export default function Home({ products }: IHomeProducts) {
       spacing: 48
     }
   });
-  console.log(products);
 
   return (
     <HomeContainer ref={sliderRef} className="keen-slider">
@@ -34,6 +33,7 @@ export default function Home({ products }: IHomeProducts) {
           href={`/product/${product.id}`}
           className="keen-slider__slide"
           key={product.id}
+          prefetch={false}
         >
           <Image alt="" src={product.imageUrl} width={520} height={480} />
           <footer>

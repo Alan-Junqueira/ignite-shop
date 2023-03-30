@@ -16,10 +16,13 @@ interface IProductProps {
     imageUrl: string;
     price: string;
     description: string;
+    defaultPriceId: string
   };
 }
 
 export default function Product({ product }: IProductProps) {
+  const { isFallback } = useRouter();
+
   return (
     <ProductContainer>
       <ImageContainer>
@@ -29,7 +32,7 @@ export default function Product({ product }: IProductProps) {
         <h1>{product.name}</h1>
         <span>{product.price}</span>
         <p>{product.description}</p>
-        <button>Comprar Agora</button>
+        <button onClick={() => console.log(product.defaultPriceId)}>Comprar Agora</button>
       </ProductDetails>
     </ProductContainer>
   );
@@ -38,7 +41,7 @@ export default function Product({ product }: IProductProps) {
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: [{ params: { id: 'prod_Mxy339rQAQ4cDQ' } }],
-    fallback: false
+    fallback: 'blocking'
   };
 };
 
@@ -62,7 +65,8 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
           style: 'currency',
           currency: 'BRL'
         }).format(price.unit_amount! / 100),
-        description: product.description
+        description: product.description,
+        defaultPriceId: price.id
       }
     },
     revalidate: 60 * 60 * 1 // 1hour
